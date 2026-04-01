@@ -6,7 +6,7 @@ let selected = [];
 let word = "";
 let score = 0;
 let timer;
-const maxTime = 20;
+const maxTime = 60;
 let timeLeft = maxTime;
 let foundWords = new Set();
 
