@@ -6,7 +6,8 @@ let selected = [];
 let word = "";
 let score = 0;
 let timer;
-let timeLeft = 180;
+const maxTime = 20;
+let timeLeft = maxTime;
 let foundWords = new Set();
 
 let touching = false;
@@ -206,7 +207,7 @@ function updateTimerDisplay() {
 function startTimer() {
   clearInterval(timer);
 
-  timeLeft = 180;
+  timeLeft = maxTime;
   updateTimerDisplay();
 
   timer = setInterval(() => {

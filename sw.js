@@ -1,4 +1,4 @@
-const CACHE = "paroliere-v1.0.2"; // cambia versione ad ogni aggiornamento
+const CACHE = "paroliere-v1.0.3"; // cambia versione ad ogni aggiornamento
 
 self.addEventListener("install", e => {
   self.skipWaiting(); // forza aggiornamento
