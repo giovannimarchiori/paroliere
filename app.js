@@ -7,6 +7,7 @@ let word = "";
 let score = 0;
 let timer;
 let timeLeft = 180;
+let foundWords = new Set();
 
 let touching = false;
 let currentTouch = {x:0,y:0};
@@ -161,9 +162,13 @@ document.addEventListener("touchmove", e=>{
 document.addEventListener("touchend", ()=>{
   touching = false;
 
-  if(trie.isWord(word)){
-    score += getScore(word);
-    document.getElementById("score").textContent=score+" punti";
+  if (trie.isWord(word) && word.length >= 3) {
+    if (!foundWords.has(word)) {
+      foundWords.add(word);
+
+      score += getScore(word);
+      document.getElementById("score").textContent = score + " punti";
+    }
   }
 
   setTimeout(resetSelection,200);
@@ -218,14 +223,23 @@ function startTimer() {
 function startGame(){
   score=0;
   document.getElementById("score").textContent="0 punti";
-
+  foundWords = new Set();
+    
   generateGrid();
   resetSelection();
   startTimer();
 }
 
 function endGame() {
-  alert("Tempo finito!\nPunteggio: " + score);
+  const wordsList = Array.from(foundWords)
+  .sort((a, b) => b.length - a.length);
+
+  alert(
+    "Tempo finito!\n\n" +
+    "Punteggio: " + score + "\n\n" +
+    "Parole trovate (" + wordsList.length + "):\n" +
+    (wordsList.length ? wordsList.join(", ") : "Nessuna 😢")
+  );
 }
 
 (async ()=>{
