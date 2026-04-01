@@ -184,11 +184,18 @@ function showSolutions(){
 }
 
 function updateTimerDisplay() {
+  const el = document.getElementById("timer");
+
   const min = Math.floor(timeLeft / 60);
   const sec = timeLeft % 60;
 
-  document.getElementById("timer").textContent =
-    `${min}:${sec.toString().padStart(2,'0')}`;
+  el.textContent = `${min}:${sec.toString().padStart(2,'0')}`;
+
+  if (timeLeft <= 10) {
+    el.style.color = "red";
+  } else {
+    el.style.color = "black";
+  }
 }
 
 function startTimer() {
