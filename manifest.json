@@ -1,0 +1,8 @@
+{
+  "name": "Paroliere",
+  "short_name": "Paroliere",
+  "display": "standalone",
+  "start_url": ".",
+  "theme_color": "#007aff",
+  "background_color": "#ffffff"
+}

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paroliere</title>
+
+<link rel="manifest" href="manifest.json">
+
+<style>
+body { font-family: -apple-system; text-align:center; background:#f2f2f7;}
+#game { position:relative; width:320px; margin:auto;}
+.grid { display:grid; grid-template-columns:repeat(4,70px); gap:10px;}
+.cell { background:white; border-radius:12px; font-size:26px; height:70px; display:flex; align-items:center; justify-content:center;}
+.cell.active { background:#007aff; color:white;}
+canvas { position:absolute; top:0; left:0; pointer-events:none;}
+</style>
+</head>
+
+<body>
+
+<h1>Paroliere</h1>
+<div id="timer">180</div>
+<div id="word"></div>
+<div id="score">0 punti</div>
+
+<div id="game">
+<canvas id="canvas" width="320" height="320"></canvas>
+<div id="grid" class="grid"></div>
+</div>
+
+<button onclick="startGame()">Nuova partita</button>
+<button onclick="showSolutions()">Soluzioni</button>
+
+<script src="trie.js"></script>
+<script src="solver.js"></script>
+<script src="app.js"></script>
+
+</body>
+</html>
