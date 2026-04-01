@@ -9,7 +9,7 @@ let score = 0;
 let touching = false;
 let currentTouch = {x:0,y:0};
 
-const VERSION = "1.0.1";
+const VERSION = "1.0.2";
 
 async function loadDictionary() {
   const res = await fetch(`words.txt?v=${VERSION}`);
