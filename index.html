@@ -2,35 +2,92 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paroliere</title>
 
+<!-- BLOCCA ZOOM -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<title>Paroliere</title>
 <link rel="manifest" href="manifest.json">
 
 <style>
-body { font-family: -apple-system; text-align:center; background:#f2f2f7;}
-#game { position:relative; width:320px; margin:auto;}
-.grid { display:grid; grid-template-columns:repeat(4,70px); gap:10px;}
-.cell { background:white; border-radius:12px; font-size:26px; height:70px; display:flex; align-items:center; justify-content:center;}
-.cell.active { background:#007aff; color:white;}
-canvas { position:absolute; top:0; left:0; pointer-events:none;}
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: #f2f2f7;
+  font-family: -apple-system;
+}
+
+#game {
+  position: relative;
+  width: 320px;
+  margin: auto;
+  touch-action: none; /* BLOCCA SCROLL */
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 70px);
+  gap: 10px;
+}
+
+.cell {
+  background: white;
+  border-radius: 12px;
+  font-size: 26px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.cell.active {
+  background: #007aff;
+  color: white;
+}
+
+canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+#word { font-size: 22px; margin: 10px; }
+#score { font-size: 18px; }
+
+button {
+  margin: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  background: #007aff;
+  color: white;
+}
 </style>
 </head>
 
 <body>
 
-<h1>Paroliere</h1>
-<div id="timer">180</div>
-<div id="word"></div>
-<div id="score">0 punti</div>
+<h1 style="text-align:center;">Paroliere</h1>
+
+<div id="timer" style="text-align:center;">180</div>
+<div id="word" style="text-align:center;"></div>
+<div id="score" style="text-align:center;">0 punti</div>
 
 <div id="game">
-<canvas id="canvas" width="320" height="320"></canvas>
-<div id="grid" class="grid"></div>
+  <canvas id="canvas" width="320" height="320"></canvas>
+  <div id="grid" class="grid"></div>
 </div>
 
+<div style="text-align:center;">
 <button onclick="startGame()">Nuova partita</button>
 <button onclick="showSolutions()">Soluzioni</button>
+</div>
 
 <script src="trie.js"></script>
 <script src="solver.js"></script>

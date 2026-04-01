@@ -6,8 +6,13 @@ let selected = [];
 let word = "";
 let score = 0;
 
+let touching = false;
+let currentTouch = {x:0,y:0};
+
+const VERSION = "1.0.1";
+
 async function loadDictionary() {
-  const res = await fetch("words.txt");
+  const res = await fetch(`words.txt?v=${VERSION}`);
   const txt = await res.text();
 
   txt.split("\n").forEach(w => {
@@ -56,6 +61,9 @@ function drawLine(){
 
   ctx.strokeStyle="#007aff";
   ctx.lineWidth=6;
+  ctx.lineJoin="round";
+  ctx.lineCap="round";
+
   ctx.beginPath();
 
   selected.forEach((el,i)=>{
@@ -63,9 +71,16 @@ function drawLine(){
     const p=document.getElementById("game").getBoundingClientRect();
     const x=r.left-p.left+r.width/2;
     const y=r.top-p.top+r.height/2;
+
     if(i===0) ctx.moveTo(x,y);
     else ctx.lineTo(x,y);
   });
+
+  // linea che segue il dito
+  if (touching && selected.length > 0) {
+    const p=document.getElementById("game").getBoundingClientRect();
+    ctx.lineTo(currentTouch.x - p.left, currentTouch.y - p.top);
+  }
 
   ctx.stroke();
 }
@@ -82,8 +97,22 @@ function updateWord(){
   document.getElementById("word").textContent=word;
 }
 
+// 🔥 BLOCCA SCROLL iOS
+document.addEventListener("touchmove", (e) => {
+  if (touching) e.preventDefault();
+}, { passive: false });
+
+document.addEventListener("touchstart", e=>{
+  touching = true;
+  resetSelection();
+});
+
 document.addEventListener("touchmove", e=>{
+  if(!touching) return;
+
   const t=e.touches[0];
+  currentTouch = {x:t.clientX, y:t.clientY};
+
   const el=document.elementFromPoint(t.clientX,t.clientY);
 
   if(el && el.classList.contains("cell")){
@@ -91,24 +120,32 @@ document.addEventListener("touchmove", e=>{
 
     if(selected.length===0 || isAdjacent(selected.at(-1),el)){
       const letter = el.textContent === "QU" ? "Q" : el.textContent;
-      word += letter;
+      const newWord = word + letter;
 
-      if (!trie.isPrefix(word)) return;
+      if (!trie.isPrefix(newWord)) return;
 
+      word = newWord;
       selected.push(el);
       el.classList.add("active");
+
       updateWord();
       drawLine();
+
       if(navigator.vibrate) navigator.vibrate(10);
     }
+  } else {
+    drawLine(); // aggiorna linea mentre si muove
   }
 });
 
 document.addEventListener("touchend", ()=>{
+  touching = false;
+
   if(trie.isWord(word)){
     score += getScore(word);
     document.getElementById("score").textContent=score+" punti";
   }
+
   setTimeout(resetSelection,200);
 });
 
@@ -137,3 +174,8 @@ function startGame(){
   await loadDictionary();
   startGame();
 })();
+
+// PWA
+if("serviceWorker" in navigator){
+  navigator.serviceWorker.register("sw.js");
+}

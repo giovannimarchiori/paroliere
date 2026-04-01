@@ -36,3 +36,4 @@ function solveBoard(gridLetters, trie) {
 
   return Array.from(results).sort();
 }
+
