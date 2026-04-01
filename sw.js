@@ -1,6 +1,7 @@
-const CACHE = "paroliere-v2";
+const CACHE = "paroliere-v1.0.1"; // cambia versione ad ogni aggiornamento
 
 self.addEventListener("install", e => {
+  self.skipWaiting(); // forza aggiornamento
   e.waitUntil(
     caches.open(CACHE).then(c =>
       c.addAll(["./","index.html","app.js"])
@@ -9,6 +10,8 @@ self.addEventListener("install", e => {
 });
 
 self.addEventListener("activate", e => {
+  clients.claim();
+
   e.waitUntil(
     caches.keys().then(keys =>
       Promise.all(
