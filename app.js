@@ -239,7 +239,7 @@ function endGame() {
     "Tempo finito!\n\n" +
     "Punteggio: " + score + "\n\n" +
     "Parole trovate (" + wordsList.length + "):\n" +
-    (wordsList.length ? wordsList.join(", ") : "Nessuna 😢")
+    (wordsList.length ? wordsList.join(", ") : "Nessuna")
   );
 }
 
