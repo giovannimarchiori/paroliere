@@ -21,30 +21,48 @@ async function loadDictionary() {
   });
 }
 
-function randomLetter() {
-  const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  return alphabet[Math.floor(Math.random()*alphabet.length)];
-}
+const DICE = [
+  ["A","A","A","E","E","N"],
+  ["E","E","I","O","O","T"],
+  ["A","E","I","O","U","R"],
+  ["A","E","I","O","U","L"],
+  ["C","C","H","L","R","S"],
+  ["D","D","L","N","R","T"],
+  ["M","N","R","T","S","L"],
+  ["S","S","T","R","N","L"],
+  ["B","C","D","F","G","P"],
+  ["C","G","L","N","R","T"],
+  ["F","L","M","P","R","S"],
+  ["G","N","R","T","L","S"],
+  ["P","R","S","T","L","N"],
+  ["V","L","N","R","T","S"],
+  ["QU","A","E","I","O","U"], // fondamentale
+  ["Z","N","R","T","L","S"]
+];
 
 function generateGrid() {
   const g = document.getElementById("grid");
   g.innerHTML = "";
+
+  const shuffledDice = DICE.sort(() => Math.random() - 0.5);
+
   grid = [];
   letters = [];
 
-  for (let i = 0; i < 16; i++) {
-    let l = randomLetter();
-    if (l === "Q") l = "QU";
-
-    letters.push(l.replace("QU","Q"));
+  shuffledDice.forEach((die, i) => {
+    let l = die[Math.floor(Math.random() * 6)];
 
     const cell = document.createElement("div");
     cell.className = "cell";
     cell.textContent = l;
     cell.dataset.index = i;
+
+    // QU handling
+    letters.push(l === "QU" ? "Q" : l);
+
     g.appendChild(cell);
     grid.push(cell);
-  }
+  });
 }
 
 function isAdjacent(a,b){
