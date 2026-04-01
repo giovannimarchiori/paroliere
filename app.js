@@ -5,11 +5,13 @@ let letters = [];
 let selected = [];
 let word = "";
 let score = 0;
+let timer;
+let timeLeft = 180;
 
 let touching = false;
 let currentTouch = {x:0,y:0};
 
-const VERSION = "1.0.2";
+const VERSION = "1.0.3";
 
 async function loadDictionary() {
   const res = await fetch(`words.txt?v=${VERSION}`);
@@ -181,11 +183,42 @@ function showSolutions(){
   alert("Parole trovate:\n"+sol.join(", "));
 }
 
+function updateTimerDisplay() {
+  const min = Math.floor(timeLeft / 60);
+  const sec = timeLeft % 60;
+
+  document.getElementById("timer").textContent =
+    `${min}:${sec.toString().padStart(2,'0')}`;
+}
+
+function startTimer() {
+  clearInterval(timer);
+
+  timeLeft = 180;
+  updateTimerDisplay();
+
+  timer = setInterval(() => {
+    timeLeft--;
+    updateTimerDisplay();
+
+    if (timeLeft <= 0) {
+      clearInterval(timer);
+      endGame();
+    }
+  }, 1000);
+}
+
 function startGame(){
   score=0;
   document.getElementById("score").textContent="0 punti";
+
   generateGrid();
   resetSelection();
+  startTimer();
+}
+
+function endGame() {
+  alert("Tempo finito!\nPunteggio: " + score);
 }
 
 (async ()=>{
